@@ -1,3 +1,27 @@
 # source /usr/share/cachyos-zsh-config/cachyos-config.zsh
-eval "$(starship init zsh)"
+source ~/.local/share/zinit/zinit.git/zinit.zsh
 
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
+zinit load zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-history-substring-search
+zinit load zdharma-continuum/fast-syntax-highlighting
+
+source ~/.aliases
+
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
+
+[ -f /opt/anaconda/etc/profile.d/conda.sh ] && source /opt/anaconda/etc/profile.d/conda.sh
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=true
