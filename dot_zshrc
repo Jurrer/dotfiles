@@ -1,4 +1,6 @@
-# source /usr/share/cachyos-zsh-config/cachyos-config.zsh
+# Install zinit first
+# bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+
 source ~/.local/share/zinit/zinit.git/zinit.zsh
 setopt promptsubst
 
@@ -59,6 +61,9 @@ zinit light eza-community/eza
 
 zinit ice from"gh-r" as"program"
 zinit light peco/peco
+
+zinit ice from"gh-r" as"program"
+zinit light neovim/neovim
 
 zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
 zinit light sharkdp/bat
