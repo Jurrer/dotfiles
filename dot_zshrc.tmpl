@@ -127,4 +127,12 @@ bindkey '^H' backward-kill-word                                 # delete previou
 bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
 
+{{- if eq .chezmoi.os "darwin" }}
+source ~/.zsh_mac
+{{ end }}
+{{- if eq .chezmoi.os "linux" }}
+source ~/.zsh_linux
+{{ end }}
+
+
 source ~/.aliases
