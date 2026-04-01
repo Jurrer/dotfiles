@@ -1,6 +1,6 @@
 [user]
-	email = 72750942+Jurrer@users.noreply.github.com
-	name = Jurrer
+    email = {{ .gitemail | quote }}
+	name = {{ .gitname | quote }}
 	signingkey = ~/.ssh/id_ed25519.pub
 [gpg]
 	format = ssh
