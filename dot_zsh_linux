@@ -9,6 +9,10 @@ export CUDA_HOME=/opt/cuda
 # +----------+
 alias cscli="docker exec -t crowdsec cscli"
 
+# iotop errors with "setupterm: could not find terminal" when $TERM (e.g. xterm-ghostty)
+# has no terminfo entry on this machine
+alias iotop="TERM=xterm-256color sudo iotop"
+
 # +----------+
 # | Personal |
 # +----------+

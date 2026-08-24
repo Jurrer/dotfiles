@@ -1,0 +1,53 @@
+#!/bin/bash
+{{- $macPkgs := list -}}
+{{- range (include "packages_mac.txt" | splitList "\n") -}}
+{{-   $line := trim . -}}
+{{-   if and $line (not (hasPrefix "#" $line)) -}}
+{{-     $macPkgs = append $macPkgs $line -}}
+{{-   end -}}
+{{- end -}}
+{{- $linuxPkgs := list -}}
+{{- range (include "packages_linux.txt" | splitList "\n") -}}
+{{-   $line := trim . -}}
+{{-   if and $line (not (hasPrefix "#" $line)) -}}
+{{-     $linuxPkgs = append $linuxPkgs $line -}}
+{{-   end -}}
+{{- end }}
+set -euo pipefail
+
+mkdir -p "$HOME/workspace"
+
+{{- if eq .chezmoi.os "darwin" }}
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Installing Homebrew..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+for pkg in git curl zsh chezmoi {{ range $macPkgs }}{{ . }} {{ end }}; do
+    brew list "$pkg" >/dev/null 2>&1 || brew install "$pkg"
+done
+{{- else if eq .chezmoi.os "linux" }}
+if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install -y git curl zsh build-essential {{ range $linuxPkgs }}{{ . }} {{ end }}
+elif command -v pacman >/dev/null 2>&1; then
+    sudo pacman -Sy --needed --noconfirm git curl zsh base-devel {{ range $linuxPkgs }}{{ . }} {{ end }}
+elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf install -y git curl zsh @development-tools {{ range $linuxPkgs }}{{ . }} {{ end }}
+else
+    echo "Unknown package manager; install git, curl and zsh manually." >&2
+fi
+{{- end }}
+
+if [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
+    echo "Installing zinit..."
+    bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+fi
+
+if [ -e "$HOME/.ssh/id_ed25519" ]; then
+    echo "SSH key found. Skipping key generation."
+else
+    echo "No SSH key found. Generating key..."
+    ssh-keygen -t ed25519 -a 100
+fi

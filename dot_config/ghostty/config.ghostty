@@ -1,0 +1,5 @@
+scrollback-limit = 1000000000
+
+# When SSHing into a Linux host lacking the ghostty terminfo entry, run
+# infocmp -x xterm-ghostty | ssh <host> -- tic -x -
+# https://ghostty.org/docs/help/terminfo#ssh

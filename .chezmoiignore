@@ -4,3 +4,6 @@
 {{ if ne .chezmoi.os "linux" }}
 .zsh_linux
 {{ end }}
+init
+packages_mac.txt
+packages_linux.txt
