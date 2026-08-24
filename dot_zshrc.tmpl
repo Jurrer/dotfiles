@@ -44,7 +44,8 @@ zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
 eval "$(zoxide init zsh)"
 
-zinit ice as"program" from"gh-r" mv"direnv* -> direnv"
+zinit ice as"program" from"gh-r" mv"direnv* -> direnv" \
+          atclone"chmod +x direnv" atpull"%atclone"
 zinit light direnv/direnv
 eval "$(direnv hook zsh)"
 
