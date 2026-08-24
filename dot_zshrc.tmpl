@@ -44,7 +44,7 @@ export _ZO_EXCLUDE_DIRS="$HOME/work_in_progress:$HOME/**/work_in_progress"
 
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 
 zinit ice as"program" from"gh-r" mv"direnv* -> direnv" \
           atclone"chmod +x direnv" atpull"%atclone"
