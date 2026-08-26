@@ -3,7 +3,7 @@
 export PATH=~/.local/bin:$PATH
 export ANTHROPIC_BASE_URL=http://127.0.0.1:8787
 if JAVA_HOME_17=$(/usr/libexec/java_home -v 17 2>/dev/null); then
-    export JAVA_HOME=$JAVA_HOME_17
+    export "JAVA_HOME=$JAVA_HOME_17"
     export PATH="$JAVA_HOME/bin:$PATH"
 fi
 unset JAVA_HOME_17
