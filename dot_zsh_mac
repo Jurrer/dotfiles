@@ -2,5 +2,8 @@
 # export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=true
 export PATH=~/.local/bin:$PATH
 export ANTHROPIC_BASE_URL=http://127.0.0.1:8787
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-export PATH="$JAVA_HOME/bin:$PATH"
+if JAVA_HOME_17=$(/usr/libexec/java_home -v 17 2>/dev/null); then
+    export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
+unset JAVA_HOME_17
