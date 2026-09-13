@@ -8,4 +8,4 @@ Host rpi
 	IdentityFile ~/.ssh/id_ed25519
 Host cachy
     User bon
-    HostName 192.168.0.208
+    HostName 192.168.0.5

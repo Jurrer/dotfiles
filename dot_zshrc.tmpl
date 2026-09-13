@@ -160,7 +160,7 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 # export HEADROOM_BACKEND="anthropic"
 export HEADROOM_TELEMETRY="off"
 export ENABLE_TOOL_SEARCH="true"
-export ANTHROPIC_BASE_URL="https://litellm.i.domain.com"
+export ANTHROPIC_BASE_URL="https://litellm.i.{{ .domain }}"
 export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1" 
 
 # <<< headroom persistent env <<<

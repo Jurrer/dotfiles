@@ -1,4 +1,4 @@
-scrollback-limit = 1000000000
+scrollback-limit = 500000000
 theme = Aurora
 font-family = "MesloLGS NF"
 
