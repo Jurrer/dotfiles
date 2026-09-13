@@ -6,3 +6,5 @@ if JAVA_HOME_17=$(/usr/libexec/java_home -v 17 2>/dev/null); then
     export PATH="$JAVA_HOME/bin:$PATH"
 fi
 unset JAVA_HOME_17
+
+alias b='brew upgrade -y'

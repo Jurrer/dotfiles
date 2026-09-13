@@ -125,3 +125,4 @@ hba-status() {
     echo ""
     echo "########## Recent ZFS Checksum/IO Events ##########"
     hba-events
+}
