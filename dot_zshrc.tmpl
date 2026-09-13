@@ -146,16 +146,21 @@ source ~/.zsh_linux
 
 source ~/.aliases
 
+# Secrets — created empty by chezmoi, filled locally, never committed
+[[ -s ~/.config/secrets.sh ]] && source ~/.config/secrets.sh
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 # >>> headroom persistent env >>>
-export HEADROOM_PORT="8787"
-export HEADROOM_HOST="127.0.0.1"
-export HEADROOM_MODE="cache"
-export HEADROOM_BACKEND="anthropic"
+# export HEADROOM_PORT="8787"
+# export HEADROOM_HOST="127.0.0.1"
+# export HEADROOM_MODE="cache"
+# export HEADROOM_BACKEND="anthropic"
 export HEADROOM_TELEMETRY="off"
-export ANTHROPIC_BASE_URL="http://127.0.0.1:8787"
 export ENABLE_TOOL_SEARCH="true"
+export ANTHROPIC_BASE_URL="https://litellm.i.domain.com"
+export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1" 
+
 # <<< headroom persistent env <<<
