@@ -1,4 +1,4 @@
 # Packages to install on Linux (apt/pacman/dnf package names should match).
 # One package name per line. Lines starting with # are ignored.
 ffmpeg
-go
+golang
