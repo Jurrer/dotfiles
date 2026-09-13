@@ -60,7 +60,13 @@ zinit light eza-community/eza
 zinit ice from"gh-r" as"program"
 zinit light peco/peco
 
-zinit ice from"gh-r" as"program"
+{{- if eq .chezmoi.arch "arm64" }}
+zinit ice from"gh-r" as"program" bpick"*linux-arm64*" mv"nvim-linux-arm64/bin/nvim -> nvim"
+{{- else if eq .chezmoi.arch "aarch64" }}
+zinit ice from"gh-r" as"program" bpick"*linux-arm64*" mv"nvim-linux-arm64/bin/nvim -> nvim"
+{{- else }}
+zinit ice from"gh-r" as"program" bpick"*linux-x86_64*" mv"nvim-linux-x86_64/bin/nvim -> nvim"
+{{- end }}
 zinit light neovim/neovim
 
 zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
