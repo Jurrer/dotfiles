@@ -41,7 +41,13 @@ if command -v apt-get >/dev/null 2>&1; then
 elif command -v pacman >/dev/null 2>&1; then
     sudo pacman -Sy --needed --noconfirm git curl zsh base-devel {{ range $archPkgs }}{{ . }} {{ end }}
 elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y git curl zsh gcc gcc-c++ make {{ range $linuxPkgs }}{{ . }} {{ end }}
+    {{- $fedoraPkgs := list -}}
+    {{- range $linuxPkgs -}}
+    {{-   if ne . "ffmpeg" -}}
+    {{-     $fedoraPkgs = append $fedoraPkgs . -}}
+    {{-   end -}}
+    {{- end }}
+    sudo dnf install -y git curl zsh gcc gcc-c++ make {{ range $fedoraPkgs }}{{ . }} {{ end }}
 else
     echo "Unknown package manager; install git, curl and zsh manually." >&2
 fi
