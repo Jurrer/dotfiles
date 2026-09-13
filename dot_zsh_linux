@@ -33,3 +33,95 @@ wd() {
 }
 
 
+# +------------------------+
+# | HBA / ZFS Monitoring   |
+# +------------------------+
+# Investigate the LSI/Broadcom SAS HBA + pool health when scrubs are slow
+# or zpool status shows CKSUM/READ/WRITE errors. `hba-status` runs everything.
+
+hba-pcie() {
+    local addr
+    addr=$(lspci -d 1000: -nn 2>/dev/null | grep -i "Serial Attached SCSI" | cut -d' ' -f1)
+    if [[ -z "$addr" ]]; then
+        echo "No Broadcom/LSI SAS HBA found (lspci -d 1000:)"
+        return 1
+    fi
+    echo "HBA @ $addr"
+    sudo lspci -vv -s "$addr" 2>/dev/null | grep -E "LnkCap|LnkSta"
+    echo ""
+    echo "PCIe AER counters:"
+    local base="/sys/bus/pci/devices/0000:${addr}"
+    local level f total
+    for level in correctable nonfatal fatal; do
+        f="${base}/aer_dev_${level}"
+        [[ -r "$f" ]] || continue
+        total=$(grep "^TOTAL_ERR" "$f" | awk '{print $2}')
+        if [[ "$total" -gt 0 ]]; then
+            printf "  \033[31m%-12s TOTAL=%s\033[0m\n" "$level" "$total"
+        else
+            printf "  \033[32m%-12s TOTAL=%s\033[0m\n" "$level" "$total"
+        fi
+    done
+}
+
+hba-phy() {
+    local phy name rate ctr v out bad
+    for phy in /sys/class/sas_phy/phy-*; do
+        [[ -d "$phy" ]] || continue
+        name=$(basename "$phy")
+        rate=$(cat "$phy/negotiated_linkrate" 2>/dev/null)
+        [[ "$rate" == "Unknown" ]] && continue
+        bad=0
+        out=""
+        for ctr in invalid_dword_count running_disparity_error_count loss_of_dword_sync_count phy_reset_problem_count; do
+            v=$(cat "$phy/$ctr" 2>/dev/null)
+            out="${out}    ${ctr}: ${v}\n"
+            [[ "$v" -gt 0 ]] 2>/dev/null && bad=1
+        done
+        if [[ $bad -eq 1 ]]; then
+            printf "  \033[31m%s (%s)\033[0m\n" "$name" "$rate"
+        else
+            printf "  \033[32m%s (%s)\033[0m\n" "$name" "$rate"
+        fi
+        printf "$out"
+    done
+}
+
+hba-smart() {
+    local pool devpath realdev
+    for pool in $(zpool list -H -o name 2>/dev/null); do
+        echo "Pool: $pool"
+        zpool status -P "$pool" 2>/dev/null | awk '/ONLINE|DEGRADED|FAULTED/{print $1}' | while read -r devpath; do
+            [[ "$devpath" == /dev/* ]] || continue
+            realdev=$(readlink -f "$devpath" 2>/dev/null)
+            [[ -b "$realdev" ]] || continue
+            echo "  --- $realdev ($devpath) ---"
+            sudo smartctl -a "$realdev" 2>/dev/null | grep -iE "device model|^product:|serial number|SMART Health Status|SMART overall|Elements in grown defect|^read:|^write:|^verify:|Reallocated_Sector|Current_Pending|Offline_Uncorrectable|UDMA_CRC_Error" | sed 's/^/      /'
+        done
+    done
+}
+
+hba-events() {
+    local pool
+    for pool in $(zpool list -H -o name 2>/dev/null); do
+        echo "Pool: $pool — recent checksum/io events"
+        sudo zpool events -v "$pool" 2>/dev/null | awk '
+            /^[A-Za-z]/ && /ereport\.fs\.zfs\.(checksum|io)/ { hdr=$0; keep=1; next }
+            /^[A-Za-z]/ { keep=0 }
+            keep && /vdev_path/ { print "  " hdr; print "    " $0 }
+        '
+    done
+}
+
+hba-status() {
+    echo "########## PCIe / HBA Link ##########"
+    hba-pcie
+    echo ""
+    echo "########## SAS PHY Counters ##########"
+    hba-phy
+    echo ""
+    echo "########## Drive SMART Summary ##########"
+    hba-smart
+    echo ""
+    echo "########## Recent ZFS Checksum/IO Events ##########"
+    hba-events

@@ -1,6 +1,6 @@
 # [ -f /opt/anaconda/etc/profile.d/conda.sh ] && source /opt/anaconda/etc/profile.d/conda.sh
 # export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=true
-export PATH=~/.local/bin:$PATH
+
 if JAVA_HOME_17=$(/usr/libexec/java_home -v 17 2>/dev/null); then
     export JAVA_HOME="$JAVA_HOME_17"
     export PATH="$JAVA_HOME/bin:$PATH"
