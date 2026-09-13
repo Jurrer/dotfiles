@@ -12,6 +12,13 @@
 {{-   if and $line (not (hasPrefix "#" $line)) -}}
 {{-     $linuxPkgs = append $linuxPkgs $line -}}
 {{-   end -}}
+{{- end -}}
+{{- $archPkgs := list -}}
+{{- range (include "packages_arch.txt" | splitList "\n") -}}
+{{-   $line := trim . -}}
+{{-   if and $line (not (hasPrefix "#" $line)) -}}
+{{-     $archPkgs = append $archPkgs $line -}}
+{{-   end -}}
 {{- end }}
 set -euo pipefail
 
@@ -32,7 +39,7 @@ if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update
     sudo apt-get install -y git curl zsh build-essential {{ range $linuxPkgs }}{{ . }} {{ end }}
 elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -Sy --needed --noconfirm git curl zsh base-devel {{ range $linuxPkgs }}{{ . }} {{ end }}
+    sudo pacman -Sy --needed --noconfirm git curl zsh base-devel {{ range $archPkgs }}{{ . }} {{ end }}
 elif command -v dnf >/dev/null 2>&1; then
     sudo dnf install -y git curl zsh @development-tools {{ range $linuxPkgs }}{{ . }} {{ end }}
 else

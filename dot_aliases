@@ -47,6 +47,9 @@ alias vimdiff='nvim -d'
 alias svim='sudoedit'
 alias lvim='\vim -c "set nowrap|syntax off"'        # fast vim for big files / big oneliner
 
+# update lazy.nvim plugins (sync = update + clean)
+alias nvup='nvim --headless "+Lazy! sync" +qa'
+
 # +------+
 # | tmux |
 # +------+

@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+if ! command -v nvim >/dev/null 2>&1; then
+    echo "nvim not found, skipping plugin update."
+    exit 0
+fi
+
+echo "Updating nvim plugins..."
+nvim --headless "+Lazy! sync" +qa
+echo "nvim plugin update done."
