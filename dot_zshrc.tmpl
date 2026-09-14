@@ -1,5 +1,8 @@
 export ZINIT_NOASK=1
-source ~/.local/share/zinit/zinit.git/zinit.zsh
+_zinit_zsh="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git/zinit.zsh"
+[[ ! -r "$_zinit_zsh" && -r "$HOME/.config/local/share/zinit/zinit.git/zinit.zsh" ]] && _zinit_zsh="$HOME/.config/local/share/zinit/zinit.git/zinit.zsh"
+source "$_zinit_zsh"
+unset _zinit_zsh
 setopt promptsubst
 
 # Load a few important annexes, without Turbo
