@@ -219,14 +219,43 @@ yarn() {
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   yarn "$@"
 }
-# Put default node version's bin on PATH without sourcing all of nvm
+# Put default node version's bin on PATH without sourcing all of nvm.
+# nvm's alias/default may be a concrete version ("26.8.2"), a version with
+# "v" prefix, or an alias name ("node", "lts/*", a custom alias). Resolve the
+# chain down to a real versions/node/vX.Y.Z/bin directory.
+_nvm_resolve() {
+  local d="$1" i latest
+  for (( i = 0; i < 8; i++ )); do
+    case "$d" in
+      v[0-9]*)
+        [[ -d "$NVM_DIR/versions/node/$d/bin" ]] && printf '%s' "$d" && return 0 ;;
+      [0-9]*)
+        [[ -d "$NVM_DIR/versions/node/v$d/bin" ]] && printf 'v%s' "$d" && return 0 ;;
+      node|node-*|lts|lts/\*|iojs)
+        latest=$(ls -1 "$NVM_DIR/versions/node" 2>/dev/null | sort -V | tail -1)
+        [[ -n "$latest" ]] && printf '%s' "$latest" && return 0 ;;
+      lts/*)
+        latest=$(ls -1 "$NVM_DIR/versions/node" 2>/dev/null | sort -V | tail -1)
+        [[ -n "$latest" ]] && printf '%s' "$latest" && return 0 ;;
+      *)
+        if [[ -f "$NVM_DIR/alias/$d" ]]; then
+          d=$(cat "$NVM_DIR/alias/$d" 2>/dev/null)
+          continue
+        fi
+        return 1 ;;
+    esac
+  done
+  return 1
+}
 if [ -s "$NVM_DIR/alias/default" ]; then
-  _nvm_default="$(cat "$NVM_DIR/alias/default" 2>/dev/null)"
-  if [ -n "$_nvm_default" ] && [ -d "$NVM_DIR/versions/node/v${_nvm_default}/bin" ]; then
+  _nvm_default=$(cat "$NVM_DIR/alias/default" 2>/dev/null)
+  _nvm_resolved=$(_nvm_resolve "$_nvm_default" 2>/dev/null)
+  if [ -n "$_nvm_resolved" ]; then
     case ":$PATH:" in
-      *":$NVM_DIR/versions/node/v${_nvm_default}/bin:"*) ;;
-      *) export PATH="$NVM_DIR/versions/node/v${_nvm_default}/bin:$PATH" ;;
+      *":$NVM_DIR/versions/node/$_nvm_resolved/bin:"*) ;;
+      *) export PATH="$NVM_DIR/versions/node/$_nvm_resolved/bin:$PATH" ;;
     esac
   fi
-  unset _nvm_default
+  unset _nvm_default _nvm_resolved
 fi
+unset -f _nvm_resolve 2>/dev/null
