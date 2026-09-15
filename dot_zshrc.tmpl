@@ -186,37 +186,42 @@ export PATH=/home/mod/.opencode/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
+_nvm_sh="$NVM_DIR/nvm.sh"
+{{- if eq .chezmoi.os "darwin" }}
+_nvm_sh="/opt/homebrew/opt/nvm/nvm.sh"
+[[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ]] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # nvm bash_completion
+{{- end }}
 
 # Lazy-load nvm — defer ~840ms cost until node/npm/npx/nvm is actually called.
 # Default node binary stays on PATH immediately via the shim below.
 nvm() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   nvm "$@"
 }
 node() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   node "$@"
 }
 npm() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   npm "$@"
 }
 npx() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   npx "$@"
 }
 pnpm() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   pnpm "$@"
 }
 yarn() {
   unset -f nvm node npm npx pnpm yarn
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$_nvm_sh" ] && \. "$_nvm_sh"
   yarn "$@"
 }
 # Put default node version's bin on PATH without sourcing all of nvm.
