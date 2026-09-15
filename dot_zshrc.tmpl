@@ -5,6 +5,18 @@ source "$_zinit_zsh"
 unset _zinit_zsh
 setopt promptsubst
 
+# Override zicompinit to use -C (cache-only mode). The default zicompinit runs
+# compinit without -C, which rebuilds the ~370KB compdump cache on every shell
+# startup (~525ms). -C skips the security audit (compaudit) and trusts the
+# cached dump, cutting compinit from ~525ms to ~16ms.
+# If completion issues appear after adding/removing plugins, run:
+#   rm -f ~/.zcompdump && zsh -c 'source ~/.zshrc'
+# to rebuild the cache once.
+zicompinit() {
+  autoload -Uz compinit
+  compinit -C -d ${ZINIT[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump} "${(Q@)${(z@)ZINIT[COMPINIT_OPTS]}}"
+}
+
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
