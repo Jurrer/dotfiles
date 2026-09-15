@@ -5,6 +5,11 @@ source "$_zinit_zsh"
 unset _zinit_zsh
 setopt promptsubst
 
+# bun — add to fpath before compinit so _bun autloads from the cached compdump
+# (compinit runs at the fast-syntax-highlighting atinit below). Avoids sourcing
+# the 46KB _bun file on every shell startup.
+fpath=("$HOME/.bun" $fpath)
+
 # Override zicompinit to use -C (cache-only mode). The default zicompinit runs
 # compinit without -C, which rebuilds the ~370KB compdump cache on every shell
 # startup (~525ms). -C skips the security audit (compaudit) and trusts the
@@ -200,4 +205,3 @@ export PATH="$HOME/.local/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-[[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
