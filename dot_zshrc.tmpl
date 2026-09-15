@@ -194,7 +194,13 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 export HEADROOM_TELEMETRY="off"
 export ENABLE_TOOL_SEARCH="true"
 export ANTHROPIC_BASE_URL="https://litellm.i.{{ .domain }}"
-export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1" 
+export ANTHROPIC_MODEL="claude-sonnet-5"
+export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1"
+
+export GRAFT_PROVIDER="litellm"
+export GRAFT_API_KEY="$ANTHROPIC_AUTH_TOKEN"
+export GRAFT_MODEL="$ANTHROPIC_MODEL"
+export GRAFT_BASE_URL="$ANTHROPIC_BASE_URL"
 
 # <<< headroom persistent env <<<
 
