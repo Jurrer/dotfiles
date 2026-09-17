@@ -120,6 +120,8 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 function _history_substring_search_config() {
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
+    bindkey '^[OA' history-substring-search-up
+    bindkey '^[OB' history-substring-search-down
 }
 
 zinit ice atload'_history_substring_search_config'
