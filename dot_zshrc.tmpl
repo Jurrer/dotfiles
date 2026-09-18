@@ -184,29 +184,24 @@ source ~/.aliases
 # Secrets — created empty by chezmoi, filled locally, never committed
 [[ -s ~/.config/secrets.sh ]] && source ~/.config/secrets.sh
 
+
+
+{{- if .AI }}
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
-
-# >>> headroom persistent env >>>
-# export HEADROOM_PORT="8787"
-# export HEADROOM_HOST="127.0.0.1"
-# export HEADROOM_MODE="cache"
-# export HEADROOM_BACKEND="anthropic"
-export HEADROOM_TELEMETRY="off"
-export ENABLE_TOOL_SEARCH="true"
 export ANTHROPIC_BASE_URL="https://litellm.i.{{ .domain }}"
 export ANTHROPIC_MODEL="claude-sonnet-5"
 export ANTHROPIC_SMALL_FAST_MODEL="claude-haiku-4-5"
-export DO_NOT_TRACK="1"
 export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1"
-
+export ENABLE_TOOL_SEARCH="true"
+export DO_NOT_TRACK="1"
 export GRAFT_PROVIDER="litellm"
 export GRAFT_API_KEY="$ANTHROPIC_AUTH_TOKEN"
 export GRAFT_MODEL="$ANTHROPIC_MODEL"
 export GRAFT_BASE_URL="$ANTHROPIC_BASE_URL"
+{{- end }}
 
-# <<< headroom persistent env <<<
 
 # opencode
 export PATH=/home/mod/.opencode/bin:$PATH
