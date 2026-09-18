@@ -184,6 +184,9 @@ source ~/.aliases
 # Secrets — created empty by chezmoi, filled locally, never committed
 [[ -s ~/.config/secrets.sh ]] && source ~/.config/secrets.sh
 
+# Host-local overrides — aliases/exports exclusive to this host, never committed
+[[ -s ~/.config/local-overrides.zsh ]] && source ~/.config/local-overrides.zsh
+
 
 
 {{- if .AI }}

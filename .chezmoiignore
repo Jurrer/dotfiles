@@ -8,3 +8,4 @@ init
 packages_mac.txt
 packages_linux.txt
 .config/secrets.sh
+.config/local-overrides.zsh
