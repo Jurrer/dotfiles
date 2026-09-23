@@ -67,7 +67,6 @@ export _ZO_EXCLUDE_DIRS="$HOME/work_in_progress:$HOME/**/work_in_progress"
 
 zinit ice from"gh-r" as"program"
 zinit light ajeetdsouza/zoxide
-eval "$(zoxide init zsh --cmd cd)"
 
 zinit ice as"program" from"gh-r" mv"direnv* -> direnv" \
           atclone"chmod +x direnv" atpull"%atclone"
@@ -213,3 +212,6 @@ export PATH="$HOME/.local/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# zoxide must be initialized last so nothing after it can clobber its functions
+eval "$(zoxide init zsh --cmd cd)"
