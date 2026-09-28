@@ -8,3 +8,4 @@ fi
 unset JAVA_HOME_17
 
 alias b='brew upgrade -y'
+export HOMEBREW_NO_AUTO_UPDATE=1
