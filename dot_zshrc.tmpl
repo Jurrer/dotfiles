@@ -212,5 +212,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# if chezmoi installed via script
+export PATH="$HOME/bin/chezmoi:$PATH"
+
 # zoxide must be initialized last so nothing after it can clobber its functions
 eval "$(zoxide init zsh --cmd cd)"
