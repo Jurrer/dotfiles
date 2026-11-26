@@ -18,4 +18,15 @@ for local_file in ~/.config/local-overrides.zsh ~/.config/secrets.sh; do
 done
 
 printf '\n=== chezmoi variables ===\n'
-chezmoi data --format=yaml | sed '/^chezmoi:$/,$d'
+chezmoi data --format=yaml | awk '
+    /^chezmoi:$/ {
+        skip = 1
+        next
+    }
+    skip && /^[^[:space:]]/ {
+        skip = 0
+    }
+    !skip {
+        print
+    }
+'
