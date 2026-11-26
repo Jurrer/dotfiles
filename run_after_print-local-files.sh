@@ -12,10 +12,10 @@ fi
 
 for local_file in ~/.config/local-overrides.zsh ~/.config/secrets.sh; do
     if [[ -s "$local_file" ]]; then
-        printf '### %s\n' "$local_file"
+        printf '\n=== %s ===\n' "$local_file"
         cat "$local_file"
     fi
 done
 
-printf '### chezmoi data\n'
-chezmoi data
+printf '\n=== chezmoi variables ===\n'
+chezmoi data --format=yaml | sed '/^chezmoi:$/,$d'
