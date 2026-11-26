@@ -3,3 +3,5 @@
     gitname  = {{ promptStringOnce . "gitname" "Git name" "" | quote }}
     domain   = {{ promptStringOnce . "domain" "Domain" "" | quote }}
     AI       = {{ promptBoolOnce . "AI" "Enable AI env exports" true }}
+    llmkey   = {{ promptStringOnce . "llmkey" "LLM key" "" | quote }}
+    llmmodel = {{ promptStringOnce . "llmmodel" "LLM model" "" | quote }}
