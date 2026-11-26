@@ -6,7 +6,7 @@ if [[ ! -t 0 ]]; then
 fi
 
 read -r -p "Print local-only sourced files and chezmoi variables? [y/N] " print_locals
-if [[ "${print_locals,,}" != y ]]; then
+if [[ "$(printf '%s' "$print_locals" | tr '[:upper:]' '[:lower:]')" != y ]]; then
     exit 0
 fi
 
