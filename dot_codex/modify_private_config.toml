@@ -1,0 +1,9 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $stdin := trim .chezmoi.stdin -}}
+{{- $current := dict -}}
+{{- if ne $stdin "" -}}
+{{- $current = $stdin | fromToml -}}
+{{- end -}}
+{{- $overrides := includeTemplate "codex-create-config-overrides.toml" . | fromToml -}}
+{{- $merged := mustMergeOverwrite $current $overrides -}}
+{{- toToml $merged }}

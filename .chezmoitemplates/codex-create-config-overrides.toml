@@ -1,0 +1,38 @@
+model = "zai/glm-5.3-flash"
+review_model = "zai/glm-5.3-flash"
+model_provider = "litellm"
+suppress_unstable_features_warning = true
+model_reasoning_effort = "low"
+
+[model_providers.litellm]
+name = "LiteLLM"
+base_url = "https://litellm.i.{{ .domain }}/v1"
+env_key = "ANTHROPIC_AUTH_TOKEN"
+wire_api = "responses"
+model_catalog_url = "https://litellm.i.{{ .domain }}/v1/models"
+
+[agents]
+max_concurrent_threads_per_session = 2
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GITHUB_PAT_TOKEN"
+
+[desktop]
+followUpQueueMode = "steer"
+preventSleepWhileRunning = true
+enabled-reasoning-efforts = ["low", "high", "persistent", "max"]
+
+[marketplaces.mattpocock]
+source_type = "git"
+source = "https://github.com/mattpocock/skills.git"
+
+[features]
+guardian_approval = true
+default_mode_request_user_input = true
+memories = true
+api_key_model_discovery = true
+
+[memories]
+generate_memories = true
+use_memories = true
