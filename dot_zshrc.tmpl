@@ -186,22 +186,6 @@ source ~/.aliases
 # Host-local overrides — aliases/exports exclusive to this host, never committed
 [[ -s ~/.config/local-overrides.zsh ]] && source ~/.config/local-overrides.zsh
 
-
-# Show local-only sourced files and chezmoi variables for copying to another machine
-if [[ -t 0 ]]; then
-  read "print_locals?Print local-only sourced files and chezmoi variables? [y/N] "
-  if [[ "${print_locals:l}" == y ]]; then
-    for _local_file in ~/.config/local-overrides.zsh ~/.config/secrets.sh; do
-      [[ -s "$_local_file" ]] && { print "### $_local_file"; cat "$_local_file"; }
-    done
-    unset _local_file
-    if (( $+commands[chezmoi] )); then
-      print '### chezmoi data'
-      chezmoi data
-    fi
-  fi
-fi
-
 {{- if .AI }}
 export ANTHROPIC_BASE_URL="https://litellm.i.{{ .domain }}"
 export ANTHROPIC_MODEL="claude-sonnet-5"
