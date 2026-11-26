@@ -6,4 +6,9 @@
 {{- end -}}
 {{- $overrides := includeTemplate "codex-create-config-overrides.toml" . | fromToml -}}
 {{- $merged := mustMergeOverwrite $current $overrides -}}
+{{- if and (hasKey $merged "model_providers") (hasKey $merged.model_providers "litellm") -}}
+{{- $provider := $merged.model_providers.litellm -}}
+{{- $_ := unset $provider "env_key" -}}
+{{- $_ := set $provider "api_key" $.llmkey -}}
+{{- end -}}
 {{- toToml $merged }}
