@@ -7,7 +7,7 @@ model_reasoning_effort = "low"
 [model_providers.litellm]
 name = "LiteLLM"
 base_url = "{{ .llmurl }}/v1"
-api_key = "{{ .llmkey }}"
+http_headers = { "Authorization" = "Bearer {{ .llmkey }}" }
 wire_api = "responses"
 model_catalog_url = "{{ .llmurl }}/v1/models"
 
@@ -16,7 +16,7 @@ max_concurrent_threads_per_session = 2
 
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
-bearer_token = "{{ .ghpatmcp }}"
+http_headers = { "Authorization" = "Bearer {{ .ghpatmcp }}" }
 
 [desktop]
 followUpQueueMode = "steer"
