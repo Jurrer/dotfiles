@@ -186,21 +186,7 @@ source ~/.aliases
 # Host-local overrides — aliases/exports exclusive to this host, never committed
 [[ -s ~/.config/local-overrides.zsh ]] && source ~/.config/local-overrides.zsh
 
-{{- if .AI }}
-export ANTHROPIC_BASE_URL="https://litellm.i.{{ .domain }}"
-export ANTHROPIC_MODEL="claude-sonnet-5"
-export ANTHROPIC_SMALL_FAST_MODEL="claude-haiku-4-5"
-export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1
-export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
-export ENABLE_TOOL_SEARCH="true"
 export DO_NOT_TRACK="1"
-export GRAFT_PROVIDER="litellm"
-export GRAFT_API_KEY="$ANTHROPIC_AUTH_TOKEN"
-export GRAFT_MODEL="$ANTHROPIC_MODEL"
-export GRAFT_BASE_URL="$ANTHROPIC_BASE_URL"
-
-{{- end }}
-
 
 # opencode
 export PATH=/home/mod/.opencode/bin:$PATH

@@ -1,15 +1,15 @@
-model = "zai/glm-5.3-flash"
-review_model = "zai/glm-5.3-flash"
+model = "{{ .llmmodel }}"
+review_model = "{{ .llmmodel }}"
 model_provider = "litellm"
 suppress_unstable_features_warning = true
 model_reasoning_effort = "low"
 
 [model_providers.litellm]
 name = "LiteLLM"
-base_url = "https://litellm.i.{{ .domain }}/v1"
-env_key = "ANTHROPIC_AUTH_TOKEN"
+base_url = "{{ .llmurl }}/v1"
+api_key = "{{ .llmkey }}"
 wire_api = "responses"
-model_catalog_url = "https://litellm.i.{{ .domain }}/v1/models"
+model_catalog_url = "{{ .llmurl }}/v1/models"
 
 [agents]
 max_concurrent_threads_per_session = 2
