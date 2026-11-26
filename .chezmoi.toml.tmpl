@@ -5,3 +5,4 @@
     AI       = {{ promptBoolOnce . "AI" "Enable AI env exports" true }}
     llmkey   = {{ promptStringOnce . "llmkey" "LLM key" "" | quote }}
     llmmodel = {{ promptStringOnce . "llmmodel" "LLM model" "" | quote }}
+    llmurl   = {{ promptStringOnce . "llmurl" "LLM URL" "" | quote }}
